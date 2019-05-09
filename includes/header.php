@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Administrator</title>
+        <title>Insurance System</title>
 
         <!-- Bootstrap Core CSS -->
         <link  rel="stylesheet" href="assets/css/bootstrap.min.css"/>
@@ -46,7 +46,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="">Administrator</a>
+                        <a class="navbar-brand" href=""><i class="fa fa-home fa-fw"></i> Home</a>
                     </div>
                     <!-- /.navbar-header -->
 
@@ -85,14 +85,29 @@
                                     <ul class="nav nav-second-level">
                                         <li>
                                             <a href="customers.php"><i class="fa fa-list fa-fw"></i>List all</a>
+                                        </li>                                        
+                                       
+                                    <li>
+                                        <a href="add_customer.php"><i class="fa fa-plus fa-fw"></i>Add New</a>
+                                    </li>
+                                    </ul>
+                                </li>
+                                   <li <?php echo (CURRENT_PAGE == "insurance.php" || CURRENT_PAGE == "add_insurance.php") ? 'class="active"' : ''; ?>>
+                                    <a href="#"><i class="fa fa-user-circle fa-fw"></i> Insurance<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+                                        <li>
+                                            <a href="insurance.php"><i class="fa fa-list fa-fw"></i>List all</a>
                                         </li>
                                         
                                          <li>
                                             <a href="printed_certs.php"><i class="fa fa-list fa-fw"></i>Printed Certs</a>
                                         </li>
                                     <li>
-                                        <a href="add_customer.php"><i class="fa fa-plus fa-fw"></i>Add New</a>
+                                        <a href="add_insurance.php"><i class="fa fa-plus fa-fw"></i>Add New</a>
                                     </li>
+                                      <li>
+                                            <a href="renew_insurance.php"><i class="fa fa-refresh fa-fw"></i>Renew Insurance</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li>

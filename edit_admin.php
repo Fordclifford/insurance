@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// Sanitize input post if we want
 	$data_to_update = filter_input_array(INPUT_POST);
 	//Check whether the user name already exists ;
-	$db = getDbInstance();
+	$db = getUipDbInstance();
 	$db->where('user_name', $data_to_update['user_name']);
 	$db->where('id', $admin_user_id, '!=');
 	//print_r($data_to_update['user_name']);die();
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	//Encrypting the password
 	$data_to_update['passwd'] = password_hash($data_to_update['passwd'], PASSWORD_DEFAULT);
 
-	$db = getDbInstance();
+	$db = getUipDbInstance();
 	$db->where('id', $admin_user_id);
 	$stat = $db->update('admin_accounts', $data_to_update);
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 //Select where clause
-$db = getDbInstance();
+$db = getUipDbInstance();
 $db->where('id', $admin_user_id);
 
 $admin_account = $db->getOne("admin_accounts");

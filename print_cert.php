@@ -18,7 +18,7 @@ $operation = filter_input(INPUT_GET, 'operation', FILTER_SANITIZE_STRING);
             $db->join("m_client c", "c.id = d.client_id", "INNER");
             $db->where("d.id", $client_id);
              //$db->where("d.print_status", 1);
-             $select = array('c.id','d.id as d_id', 'c.display_name','d.policy_number','d.commence_date','d.due_date','c.mobile_no','c.number_plate','c.account_no','d.number_plate','d.Engine','d.Model','d.Others','d.client_id');
+             $select = array('c.id','d.id as d_id', 'c.display_name','d.policy_number','c.firstname','c.lastname','d.commence_date','d.due_date','c.mobile_no','c.number_plate','c.account_no','d.number_plate','d.Engine','d.Model','d.Others','d.client_id');
 
             //$customers = $db->get("client_motorbike_details d");
             $customers = $db->arraybuilder()->paginate("client_motorbike_details d", 1, $select);
@@ -43,7 +43,7 @@ $pdf->SetCreator(PDF_CREATOR);
 
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
-$pdf->SetMargins(15, 20, -7);
+$pdf->SetMargins(7, 12, -7);
 //$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 // set auto page breaks
@@ -61,7 +61,8 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('times', 2, 2);
+//$pdf->SetFont('helveticaB', 5, 2);
+$pdf->SetFont('helvetica', 'B',4,'', 'false');
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,14 +78,15 @@ $pdf->SetKeywords('TCPDF, PDF');
 
  $id = $row['d_id'];
 
- $name = $row['display_name'];
-$policy_number= $row['policy_number'];
+ $name = strtoupper($row['firstname']." ".$row['lastname']);
+$policy_number= strtoupper($row['policy_number']);
 $print_date = new DateTime($row['commence_date']);
 $print_date= $print_date->format("d/m/Y");
 $print_time = new DateTime($row['commence_date']);
 $print_time=$print_time->format("g:i A");
 
-  $number_plate = $row['number_plate'];
+  $number_plate = strtoupper($row['number_plate']);
+  echo $row['due_date'];
 $duedate = new DateTime($row['due_date']);
 $duedate= $duedate->format("d/m/Y");
 
@@ -99,18 +101,21 @@ $duedate= $duedate->format("d/m/Y");
 <tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_004"><span class="cls_004"></span></div></tr>
 <tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_004"><span class="cls_004"></span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_004"><span class="cls_004"></span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:333.49px;top:180.57px" class="cls_003"><span class="cls_003">18479458</span></div></tr>' ;
+<tr><div style="position:absolute;left:20.49px;top:180.57px" class="cls_003"><span class="cls_003">'.str_pad($id, 8, '0', STR_PAD_LEFT).'</span></div></tr>' ;
 
-$subtable = ''
-        . '<style type="text/css">
-span.cls_004{font-family:Arial;font-size:7.6px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
-div.cls_004{font-family:Arial;font-size:7.6px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
-span.cls_003{font-family:Arial;font-size:7.1px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
-div.cls_003{font-family:Arial;font-size:7.1px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+$subtable = '<style type="text/css">
+span.cls_004{font-family:Helvetica;font-size:7.6px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_004{font-family:Helvetica;font-size:8.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+span.cls_008{font-family:Helvetica;font-size:10px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_008{font-family:Helvetica;font-size:10.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+span.cls_006{font-family:Helvetica;font-size:9.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_006{font-family:Helvetica;font-size:9.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+span.cls_002{font-family:Helvetica;font-size:8.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_002{font-family:Helvetica;font-size:8.3px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+
+span.cls_003{font-family:Helvetica;font-size:8.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_003{font-family:Helvetica;font-size:8.0px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
 tr.name1{position:absolute;
     margin-left:100%;
         top:53.05px;
@@ -122,36 +127,36 @@ tr.name1{position:absolute;
         }
 
    </style>
-<tr><div style="" class="cls_004"><span class="name1 cls_004">'.$row['display_name'].'</span></div></tr>
-<tr class="name1"><div style="position:absolute;left:38.50px;top:65.80px" class="cls_004"><span class="cls_004">'.$policy_number.'</span></div></tr>
+<tr><div style="" class="cls_003"><span class="name1 cls_003">'.$name.'</span></div></tr>
+<tr class="name1"><div style="position:absolute;left:38.50px;top:65.80px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;'.$policy_number.'</span></div></tr>
 <tr>
-<div style="position:absolute;padding-left:71.50px;top:78.55px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_date.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_time.'</span></div>
+<div style="position:absolute;padding-left:71.50px;top:78.55px" class="cls_002"><span class="cls_002">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_date.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_time.'</span></div>
 </tr>
-<tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$duedate.'</span></div></tr>
-<tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$number_plate.'</span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004">THE MONARCH INS. CO. LTD.</span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
+<tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_006"><span class="cls_006">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$duedate.'</span></div></tr>
+<tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_006"><span class="cls_006">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$number_plate.'</span></div></tr>
+    <tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_006"><span class="cls_006">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***1 PAX***</span></div></tr>
+
+<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_002"><span class="cls_002">THE MONARCH INS. CO. LTD.</span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
 ';
 $subtable2 =
 '<tr><div style="" class="cls_004"><span class="name1 cls_004"></span></div></tr>
-<tr class="name1"><div style="position:absolute;left:38.50px;top:65.80px" class="cls_004"><span class="cls_004">'.$policy_number.'</span></div></tr>
+<tr class="name1"><div class="cls_004"><span class="cls_004">'.$policy_number.'</span></div></tr>
 <tr>
-<div style="position:absolute;padding-left:71.50px;top:78.55px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_date.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_time.'</span></div>
+<div style="position:absolute;padding-left:71.50px;top:78.55px" class="cls_002"><span class="cls_002">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_date.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$print_time.'</span></div>
 </tr>
-<tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$duedate.'</span></div></tr>
-<tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$number_plate.'</span></div></tr>
+<tr><div style="position:absolute;left:71.50px;top:91.30px" class="cls_006"><span class="cls_006">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$duedate.'</span></div></tr>
+<tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_008"><span class="cls_008">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$number_plate.'</span></div></tr>
+    <tr><div style="position:absolute;left:71.50px;top:104.05px" class="cls_004"><span class="cls_004">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***1 PAX***</span></div></tr>
+
+
+
+<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_002"><span class="cls_002">THE MONARCH INS. CO. LTD.</span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004">THE MONARCH INS. CO. LTD.</span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
 <tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
-<tr><div style="position:absolute;left:463.04px;top:129.55px" class="cls_004"><span class="cls_004"></span></div></tr>
+
 ';
 $html = '<table border="0"  >
    
@@ -159,7 +164,7 @@ $html = '<table border="0"  >
         <td>'.$subtable.'</td>
             <td style="width:18%">'.$subtable1.'</td>
        <td>'.$subtable.'</td>
-             <td style="width:16%">'.$subtable1.'</td>
+             <td style="width:18%">'.$subtable1.'</td>
            <td >'.$subtable2.'</td>
                
     </tr>
@@ -180,7 +185,7 @@ $pdf->lastPage();
 // ---------------------------------------------------------
 ob_end_clean();
 //Close and output PDF document
-$pdf->Output($name." ".$print_date.'.pdf', 'I');
+$pdf->Output($name." ".$print_date.'.pdf', 'D');
 
 $db = getUipDbInstance();
 $data = Array (

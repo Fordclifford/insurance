@@ -9,7 +9,7 @@ $db = getUipDbInstance();
 
 //Get Dashboard information
 
-$numCustomers = $db->getValue ("client_motorbike_details", "count(*)");
+$numCustomers = $db->getValue ("client_insurance_details", "count(*)");
 
 include_once('includes/header.php');
 ?>

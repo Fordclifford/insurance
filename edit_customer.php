@@ -19,10 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     //Get input data
     $data_to_update = filter_input_array(INPUT_POST);
     
-    $time = strtotime($data_to_update['commence_date']);
+//    $time = strtotime($data_to_update['commence_date']);
     
-$final = date("Y-m-d", strtotime("+".$data_to_update['period']."month", $time));
-    $data_to_update['due_date'] = $final;
+//$final = date("Y-m-d", strtotime("+".$data_to_store['period']."month", $time));
+//$dt = new DateTime($final);
+//$dt->modify('-1 day');
+//$dt->format('Y-m-d H:i:s');
+    //$data_to_store['due_date'] = date_format($dt,"Y/m/d H:i:s");
     
     $data_to_update['updated_at'] = date('Y-m-d H:i:s');
     $db = getUipDbInstance();

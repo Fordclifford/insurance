@@ -9,26 +9,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Mass Insert Data. Keep "name" attribute in html form same as column name in mysql table.
     $data_to_store = array_filter($_POST);
 
-    $motorbike = Array();
+      $insurance = Array();
 
-         $motorbike['number_plate'] = $data_to_store['policy_number'];
-           $motorbike['client_id'] = $data_to_store['client_id'];
-          $motorbike['Model'] =$data_to_store['Model'];
-           $motorbike['Engine'] = $data_to_store['Engine'];
-            $motorbike['kra_pin'] = $data_to_store['kra_pin'];
-             $motorbike['cheses_number'] =$data_to_store['cheses_number'];
-              $motorbike['COLOUR'] = $data_to_store['COLOUR'];
-               $motorbike['Others'] = $data_to_store['Others'];
-                $motorbike['marketing_agent'] = $data_to_store['marketing_agent'];
+    $insurance['created_at'] = date('Y-m-d H:i:s');
+    $time = strtotime($data_to_store['commence_date']);
 
+    $final = date("Y-m-d", strtotime("+" . $data_to_store['period'] . "month", $time));
+    $dt = new DateTime($final);
+    $dt->modify('-1 day');
+    $dt->format('Y-m-d H:i:s');
+    $insurance['due_date'] = date_format($dt, "Y/m/d H:i:s");
+     $insurance['created_at'] = date('Y-m-d H:i:s');
+      $insurance['motorbike_details_id'] = $data_to_store['client_id'];
+       $insurance['period'] = $data_to_store['period'];
+        $insurance['policy_number'] = $data_to_store['policy_number'];
+        
+        $db = getUipDbInstance();
 
-    $db = getUipDbInstance();
+    $last_id = $db->insert('client_insurance_details', $insurance);
+   //  $last_id2 = $db->insert('`client motorbike details`', $motorbike);
 
-    $last_id = $db->insert('`client motorbike details`', $motorbike);
-    // $last_id2 = $db->insert('`client motorbike details`', $motorbike);
-
-    if ($last_id ) {
-        $_SESSION['success'] = "Client added successfully!";
+    if ($last_id && $last_id2 ) {
+        $_SESSION['success'] = "Insurance added successfully!";
         header('location: customers.php');
         exit();
     } else {
@@ -45,12 +47,12 @@ require_once 'includes/header.php';
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Add Client Motorbike Details</h2>
+            <h2 class="page-header">Add Insurance Details</h2>
         </div>
 
     </div>
     <form class="form" action="" method="post"  id="customer_form" enctype="multipart/form-data">
-<?php include_once('./forms/customer_form.php'); ?>
+<?php include_once('./forms/insurance_form.php'); ?>
     </form>
 </div>
 

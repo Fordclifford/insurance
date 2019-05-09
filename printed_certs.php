@@ -12,7 +12,7 @@ $order_by = filter_input(INPUT_GET, 'order_by');
 $page = filter_input(INPUT_GET, 'page');
 
 //Per page limit for pagination.
-$pagelimit = 20;
+$pagelimit = 10;
 
 if (!$page) {
     $page = 1;
@@ -20,7 +20,7 @@ if (!$page) {
 
 // If filter types are not selected we show latest created data first
 if (!$filter_col) {
-    $filter_col = "c.submittedon_date";
+    $filter_col = "d.id";
 }
 if (!$order_by) {
     $order_by = "Desc";
@@ -28,13 +28,13 @@ if (!$order_by) {
 
 //Get DB instance. i.e instance of MYSQLiDB Library
 $db = getUipDbInstance();
- $db->join("m_client c", "c.id = d.client_id", "LEFT");
-  $db->join("m_loan l", "c.id = l.client_id", "LEFT");
-$db->where ("(l.product_id = ? or l.product_id = ?)", Array(44,45));
+ $db->join("m_client c", "c.id = d.motorbike_details_id", "LEFT");
+ $db->join("`client motorbike details` e", "c.id = e.client_id", "LEFT");
             $db->where("c.status_enum", 300);
-            $db->where("l.loan_status_id", 300);
+              $db->where("c.office_id", 50);
+           
             $db->where("d.print_status", "1");
-   $select = array('d.id', 'c.display_name','d.policy_number','d.due_date','c.mobile_no','d.commence_date','c.account_no',"d.number_plate","d.Engine","d.Model","d.Others","d.client_id");
+   $select = array('d.id', 'c.display_name','d.policy_number','d.commence_date','d.period', 'd.due_date','c.mobile_no','c.account_no',"e.`number_plate`","e.Engine","e.Model","e.Others","e.client_id");
 
 //Start building query according to input parameters.
 // If search string
@@ -54,7 +54,7 @@ if ($order_by)
 $db->pageLimit = $pagelimit;
 
 //Get result of the query.
-$customers = $db->arraybuilder()->paginate("client_motorbike_details d", $page, $select);
+$customers = $db->arraybuilder()->paginate("client_insurance_details d", $page, $select);
 $total_pages = $db->totalPages;
 
 // get columns for order filter
@@ -152,7 +152,7 @@ include_once 'includes/header.php';
                             	<a href="print_cert.php?client_id=<?php echo $row['id'] ?>&operation=print" class="btn btn-primary" style="margin-right: 8px;"><span class="glyphicon glyphicon-print"></span>
 					<a href="edit_customer.php?client_id=<?php echo $row['id'] ?>&operation=edit" class="btn btn-primary" style="margin-right: 8px;"><span class="glyphicon glyphicon-edit"></span>
 
-					<a href=""  class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id'] ?>" style="margin-right: 8px;"><span class="glyphicon glyphicon-trash"></span>
+					
 	</td>
 		
 </tr>
@@ -206,7 +206,7 @@ include_once 'includes/header.php';
             echo '<ul class="pagination text-center">';
             for ($i = 1; $i <= $total_pages; $i++) {
                 ($page == $i) ? $li_class = ' class="active"' : $li_class = "";
-                echo '<li' . $li_class . '><a href="customers.php' . $http_query . '&page=' . $i . '">' . $i . '</a></li>';
+                echo '<li' . $li_class . '><a href="printed_certs.php' . $http_query . '&page=' . $i . '">' . $i . '</a></li>';
             }
             echo '</ul></div>';
         }

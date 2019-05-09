@@ -12,7 +12,7 @@ $order_by = filter_input(INPUT_GET, 'order_by');
 $page = filter_input(INPUT_GET, 'page');
 
 //Per page limit for pagination.
-$pagelimit = 20;
+$pagelimit = 10;
 
 if (!$page) {
     $page = 1;
@@ -28,13 +28,13 @@ if (!$order_by) {
 
 //Get DB instance. i.e instance of MYSQLiDB Library
 $db = getUipDbInstance();
- $db->join("m_client c", "c.id = d.client_id", "LEFT");
-  $db->join("m_loan l", "c.id = l.client_id", "LEFT");
-$db->where ("(l.product_id = ? or l.product_id = ?)", Array(44,45));
+ $db->join("m_client c", "c.id = d.motorbike_details_id", "LEFT");
+ $db->join("`client motorbike details` e", "c.id = e.client_id", "LEFT");
             $db->where("c.status_enum", 300);
-            $db->where("l.loan_status_id", 300);
+              $db->where("c.office_id", 50);
+           
             $db->where("d.print_status", "0");
-   $select = array('d.id', 'c.display_name','c.mobile_no','c.account_no',"d.number_plate","d.Engine","d.Model","d.Others","d.client_id");
+   $select = array('d.id', 'c.display_name','d.commence_date','d.period', 'd.due_date','c.mobile_no','c.account_no',"e.`number_plate`","e.Engine","e.Model","e.Others","e.client_id");
 
 //Start building query according to input parameters.
 // If search string
@@ -54,7 +54,7 @@ if ($order_by)
 $db->pageLimit = $pagelimit;
 
 //Get result of the query.
-$customers = $db->arraybuilder()->paginate("client_motorbike_details d", $page, $select);
+$customers = $db->arraybuilder()->paginate("client_insurance_details d", $page, $select);
 $total_pages = $db->totalPages;
 
 // get columns for order filter
@@ -112,7 +112,7 @@ include_once 'includes/header.php';
                 if ($order_by == 'Desc') {
                     echo "selected";
                 }
-                ?>>Desc</option>
+                ?>Desc</option>
             </select>
             <input type="submit" value="Go" class="btn btn-primary">
 
@@ -131,6 +131,9 @@ include_once 'includes/header.php';
                 <th>Mobile</th>
                 <th>Account No</th>
                 <th>Number Plate</th>
+                <th>Commence Date</th>
+                 <th>Period(Months)</th>
+                <th>Due Date</th>
                 <th>Engine</th>
                 <th>Model</th>
                 <th>Others</th>
@@ -146,6 +149,9 @@ include_once 'includes/header.php';
 	                <td><?php echo htmlspecialchars($row['mobile_no']) ?></td>
 	                <td><?php echo htmlspecialchars($row['account_no']) ?> </td>
                         <td><?php echo htmlspecialchars($row['number_plate']); ?></td>
+                            <td><?php echo htmlspecialchars($row['commence_date']); ?></td>
+                             <td><?php echo htmlspecialchars($row['period']); ?></td>
+                                <td><?php echo htmlspecialchars($row['due_date']); ?></td>
 	                <td><?php echo htmlspecialchars($row['Engine']) ?></td>
 	                <td><?php echo htmlspecialchars($row['Model']) ?> </td>
                         <td><?php echo htmlspecialchars($row['Others']) ?></td>
@@ -153,7 +159,6 @@ include_once 'includes/header.php';
                             	<a href="print_cert.php?client_id=<?php echo $row['id'] ?>&operation=print" class="btn btn-primary" style="margin-right: 8px;"><span class="glyphicon glyphicon-print"></span>
 					<a href="edit_customer.php?client_id=<?php echo $row['id'] ?>&operation=edit" class="btn btn-primary" style="margin-right: 8px;"><span class="glyphicon glyphicon-edit"></span>
 
-					<a href=""  class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id'] ?>" style="margin-right: 8px;"><span class="glyphicon glyphicon-trash"></span>
 	</td>
 		
 </tr>

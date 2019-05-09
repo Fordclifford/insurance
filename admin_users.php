@@ -30,7 +30,7 @@ if ($order_by == "") {
 }
 
 //Get DB instance. i.e instance of MYSQLiDB Library
-$db = getDbInstance();
+$db = getUipDbInstance();
 $select = array('id', 'user_name', 'admin_type');
 
 // If user searches 

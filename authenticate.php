@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$remember = filter_input(INPUT_POST, 'remember');
 
 	//Get DB instance.
-	$db = getDbInstance();
+	$db = getUipDbInstance();
 
 	$db->where("user_name", $username);
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				setcookie('series_id', $series_id, $expires, "/");
 				setcookie('remember_token', $remember_token, $expires, "/");
 
-				$db = getDbInstance();
+				$db = getUipDbInstance();
 				$db->where ('id',$user_id);
 
 				$update_remember = array(

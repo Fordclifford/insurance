@@ -7,7 +7,7 @@
             <option value=" " >Please select Client</option>
             <?php
             require_once './config/config.php';
-            echo $sql = "select c.id,c.display_name from m_client c where c.status_enum='300' and c.office_id='50' and c.id not in (SELECT client_id from `client motorbike details`) ";
+            echo $sql = "select c.id,c.display_name from m_client c inner join `client motorbike details`  m on c.id=m.client_id inner join client_insurance_details d on d.motorbike_details_id=c.id where c.status_enum='300' and c.office_id='50' and d.print_status=1 ";
             $result = mysqli_query(getDbConnection(), $sql);
 
             $db = getUipDbInstance();
@@ -35,44 +35,24 @@
         </select>
     </div>  
 
+
     <div class="form-group">
-        <label for="number_plate">Number Plate *</label>
-        <input type="text" name="number_plate" value="<?php echo $edit ? $customer['number_plate'] : ''; ?>" placeholder="Number Plate" class="form-control" required="required" id="number_plate">
+        <label for="commence_date">Commencement Date *</label>
+        <input type="text" name="commence_date" data-date-format="dd/mm/yyyy" value="<?php echo $edit ? $customer['commence_date'] : ''; ?>" placeholder="Commence Date" class="form-control" required="required" id="commence_date">
+    </div> 
+    <div class="form-group">
+        <label>Period(Months) </label>
+
+        <input type="text" name="period"  value="<?php echo $edit ? $customer['period'] : ''; ?>" placeholder="Period" class="form-control" required="required" id="period">
     </div> 
 
     <div class="form-group">
-        <label for="Model">Model *</label>
-        <input type="text" name="Model" value="<?php echo $edit ? $customer['Model'] : ''; ?>" placeholder="Model" class="form-control"  id="Model">
+        <label for="due_date">Due Date *</label>
+        <input type="text" name="due_date" data-date-format="dd/mm/yyyy" value="<?php echo $edit ? $customer['due_date'] : ''; ?>" placeholder="Due Date" class="form-control" required="required" id="duedate">
     </div> 
-
     <div class="form-group">
-        <label for="Engine">Engine *</label>
-        <input type="text" name="Engine" value="<?php echo $edit ? $customer['Engine'] : ''; ?>" placeholder="Engine" class="form-control" id="Model">
-    </div> 
-
-    <div class="form-group">
-        <label for="kra_pin">KRA PIN</label>
-        <input name="kra_pin" placeholder="KRA PIN" class="form-control" id="address" value="<?php echo ($edit) ? $customer['kra_pin'] : ''; ?>">
-    </div> 
-
-  <div class="form-group">
-        <label for="cheses_number">Cheses Number</label>
-        <input name="cheses_number" placeholder="Cheses Number" class="form-control" id="address" value="<?php echo ($edit) ? $customer['cheses_number'] : ''; ?>">
-  
-  
-    <div class="form-group">
-        <label for="COLOUR">Colour</label>
-        <input name="COLOUR" placeholder="COLOUR" class="form-control" id="address" value="<?php echo ($edit) ? $customer['COLOUR'] : ''; ?>">
-    </div> 
-    
-    <div class="form-group">
-        <label for="cheses_number">Marketing Agent</label>
-        <input name="marketing_agent" placeholder="Marketing Agent" class="form-control" id="address" value="<?php echo ($edit) ? $customer['marketing_agent'] : ''; ?>">
-  </div>
-  
-  <div class="form-group">      
-        <label for="Others">Others</label>
-        <input name="Others" placeholder="Others" class="form-control" id="address" value="<?php echo ($edit) ? $customer['Others'] : ''; ?>"</textarea>
+        <label for="policy_number">Policy Number *</label>
+        <input type="text" name="policy_number" value="<?php echo $edit ? $customer['policy_number'] : ''; ?>" placeholder="Policy Number" class="form-control" required="required" id="policy_number">
     </div> 
 
 

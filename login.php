@@ -15,7 +15,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
 	//Get user credentials from cookies.
 	$series_id = filter_var($_COOKIE['series_id']);
 	$remember_token = filter_var($_COOKIE['remember_token']);
-	$db = getDbInstance();
+	$db = getUipDbInstance();
 	//Get user By serirs ID : 
 	$db->where("series_id", $series_id);
 	$row = $db->get('admin_accounts');
